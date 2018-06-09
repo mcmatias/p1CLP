@@ -6,6 +6,8 @@ public class BeanAcesso {
 	private String url;
 	private String usuario;
 	private String senha;
+	private String existe;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -29,6 +31,12 @@ public class BeanAcesso {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	public String getExiste() {
+		return existe;
+	}
+	public void setExiste(String existe) {
+		this.existe = existe;
 	}
 	
 	

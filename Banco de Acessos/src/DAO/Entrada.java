@@ -26,11 +26,18 @@ public class Entrada {
 		if (ret == JFileChooser.APPROVE_OPTION)
 			arquivo = chooser.getSelectedFile().getAbsolutePath();
 	}
-
-	public BeanAcesso pedeAcesso(BufferedReader br) throws IOException {
+	
+	public String escolherSite() {
 		String pergunta = "Escolha um site:";
-		BeanAcesso site = new BeanAcesso();
 		String siteEscolhido = JOptionPane.showInputDialog(pergunta);
+		
+		return siteEscolhido;
+	}
+
+	public BeanAcesso pedeAcesso(BufferedReader br, String siteEscolhido) throws IOException {
+		//String pergunta = "Escolha um site:";
+		BeanAcesso site = new BeanAcesso();
+		//String siteEscolhido = JOptionPane.showInputDialog(pergunta);
 
 		// le o arquivo
 		// InputStream is = new FileInputStream(input.getArquivo());
@@ -44,6 +51,7 @@ public class Entrada {
 				String[] retornoSplit = s.split(":");
 				if (retornoSplit[0].equals("nome")) {
 					if (siteEscolhido.equals(retornoSplit[1])) {
+						site.setExiste("S");
 						site.setNome(retornoSplit[1]);
 						s = br.readLine();
 						retornoSplit = s.split(":");
@@ -62,15 +70,24 @@ public class Entrada {
 						site.setSenha(retornoSplit[1]);
 						s = br.readLine();
 						retornoSplit = s.split(":");
-					}
+						
+						
+						return site;
+					}//se nao for o que eu to procurando, ver a prox linha
 					s = br.readLine();
 				}
+				s = br.readLine();
+				site.setExiste("N");
 			}
 
 		}
+		
+
 		// return site;
 		br.close();
 		return site;
+		
+
 
 	}
 
