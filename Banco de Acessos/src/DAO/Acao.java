@@ -49,6 +49,8 @@ public class Acao {
 	  public BeanAcesso inserir(String siteEscolhido) {
 		  
 		  		BeanAcesso novoAcesso = new BeanAcesso();
+		  		
+		  		Criptografar senhaCriptografada = new Criptografar(); 
 		  		// se entra aqui, é pq nao existe ai ja seta o nome direto
 		  		novoAcesso.setNome(siteEscolhido);
 		  
@@ -62,7 +64,8 @@ public class Acao {
 				
 				String perguntaSenha = "Inserir senha do novo Site:";   
 				String novoSenhaSite = JOptionPane.showInputDialog(perguntaSenha);
-				novoAcesso.setSenha(novoSenhaSite);
+				String senhaCrip = (senhaCriptografada.criptografar(novoSenhaSite)).toString();
+				novoAcesso.setSenha(senhaCrip);
 				
 				//inserir no txt
 		  
@@ -70,69 +73,164 @@ public class Acao {
 		  
 	  }
 	  
-	  public BeanAcesso deletar(String siteEscolhido) {
+	  public String[] deletar(BufferedReader br, String siteEscolhido) throws IOException{
 		  
 	  		BeanAcesso delAcesso = new BeanAcesso();
-	  		
+	  		String [] arqFlag = {"", "NTem"};
 	  		delAcesso.setNome(siteEscolhido);
 	  		
-	  		delAcesso.setExiste(null);
-	  		delAcesso.setNome(null);
-	  		delAcesso.setSenha(null);
-	  		delAcesso.setUrl(null);
-	  		delAcesso.setUsuario(null);
-	
-	  		//apagar do txt
-	  
-	return delAcesso;
-	  
+			String s = br.readLine();
+			while (s != null) {
+				if (s.equals("**************************")) {
+					arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+					s = br.readLine();
+				} else {
+					String[] retornoSplit = s.split(":");
+					if (retornoSplit[0].equals("nome")) {
+						if ((siteEscolhido.trim()).equals(retornoSplit[1].trim())) {
+							arqFlag[1] = "Tem";
+							s = br.readLine();
+							s = br.readLine();
+							s = br.readLine();
+							s = br.readLine();
+							s = br.readLine();
+							
+						}//se nao for o que eu to procurando, ver a prox linha
+						arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+						s = br.readLine();
+						delAcesso.setExiste("N");
+					}
+					arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+					s = br.readLine();
+					//site.setExiste("N");
+				}
+
+			}
+			
+
+			// return site;
+			br.close();
+			return arqFlag;
+			
+		  
 }
 	  
-	  public BeanAcesso update(String siteEscolhido, BeanAcesso acesso) {
+	  public String[] update(String siteEscolhido, BufferedReader br) throws IOException{
 		  
 	  		BeanAcesso updtAcesso = new BeanAcesso();
 	  		
+	  		Criptografar senhaCriptografada = new Criptografar(); 
+	  		
 	  		updtAcesso.setNome(siteEscolhido);
 	  		
-	
+	  		String [] arqFlag = {"", "NTem"};
 	  		
-			String perguntaupdt = "Qual dado deseja fazer o update(URL, Usuario ou Senha)?";   
-			String updtSite = JOptionPane.showInputDialog(perguntaupdt);
-			
-			if (updtSite.equals("URL")) {
-				String perguntaupdtURL = "Qual a nova URL?"; 
-				String updtUrlSite = JOptionPane.showInputDialog(perguntaupdtURL);
-				updtAcesso.setUrl(updtUrlSite);
-				updtAcesso.setUsuario(acesso.getUsuario());
-				updtAcesso.setSenha(acesso.getSenha());
-				return updtAcesso;
+	  		
+	  		//
+			String s = br.readLine();
+			while (s != null) {
+				if (s.equals("**************************")) {
+					arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+					s = br.readLine();
+				} else {
+					String[] retornoSplit = s.split(":");
+					if (retornoSplit[0].equals("nome")) {
+						if ((siteEscolhido.trim()).equals(retornoSplit[1].trim())) {
+							updtAcesso.setExiste("S");
+							arqFlag[1] = "Tem"; 
+							updtAcesso.setNome(retornoSplit[1]);
+							arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+							s = br.readLine();
+							retornoSplit = s.split(":");
+						
+							String perguntaupdt = "Qual dado deseja fazer o update(URL, Usuario ou Senha)?";   
+							String updtSite = JOptionPane.showInputDialog(perguntaupdt);
+						//if (retornoSplit[0].equals("url")) {
+							 if (updtSite.equals("URL")) {
+								String perguntaupdtURL = "Qual a nova URL?"; 
+								String updtUrlSite = JOptionPane.showInputDialog(perguntaupdtURL);
+								updtAcesso.setUrl(updtUrlSite);
+								String ss = "url: " + (updtAcesso.getUrl()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								updtAcesso.setUsuario(retornoSplit[1]);
+								ss = "usuario: " + (updtAcesso.getUsuario()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								updtAcesso.setSenha(retornoSplit[1]);
+								ss = "senha: " + (updtAcesso.getSenha()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								
+							}
+							
+						
+						//if (retornoSplit[0].equals("usuario")) {
+							else if (updtSite.equals("Usuario")) {
+								String perguntaupdtUser = "Qual o novo usuario?"; 
+								String updtUserSite = JOptionPane.showInputDialog(perguntaupdtUser);
+								updtAcesso.setUrl(retornoSplit[1]);
+								String ss = "url: " + (updtAcesso.getUrl()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								updtAcesso.setUsuario(updtUserSite);
+								ss = "usuario: " + (updtAcesso.getUsuario()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								updtAcesso.setSenha(retornoSplit[1]);
+								ss = "senha: " + (updtAcesso.getSenha()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+							}
+		
+						
+						//if (retornoSplit[0].equals("senha")) {
+
+							else if (updtSite.equals("Senha")) {
+								String perguntaupdtSenha = "Qual a nova senha?"; 
+								String updtSenhaSite = JOptionPane.showInputDialog(perguntaupdtSenha);
+								String senhaCrip = (senhaCriptografada.criptografar(updtSenhaSite)).toString();
+								updtAcesso.setUrl(retornoSplit[1]);
+								String ss = "url: " + (updtAcesso.getUrl()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								updtAcesso.setUsuario(retornoSplit[1]);
+								ss = "usuario: " + (updtAcesso.getUsuario()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+								updtAcesso.setSenha(senhaCrip);
+								ss = "senha: " + (updtAcesso.getSenha()).toString();
+								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
+								s = br.readLine();
+								retornoSplit = s.split(":");
+							}
+							else{
+								JOptionPane.showMessageDialog(null, "Site nao encontrado");
 				
-			}
-			
-			else if (updtSite.equals("Usuario")) {
-				String perguntaupdtUser = "Qual o novo usuario?"; 
-				String updtUserSite = JOptionPane.showInputDialog(perguntaupdtUser);
-				updtAcesso.setUsuario(updtUserSite);
-				updtAcesso.setUrl(acesso.getUrl());
-				updtAcesso.setSenha(acesso.getSenha());
-				return updtAcesso;
-			}
+							}
 
-			else if (updtSite.equals("Senha")) {
-				String perguntaupdtSenha = "Qual a nova senha?"; 
-				String updtSenhaSite = JOptionPane.showInputDialog(perguntaupdtSenha);
-				updtAcesso.setSenha(updtSenhaSite);
-				updtAcesso.setUrl(acesso.getUrl());
-				updtAcesso.setUsuario(acesso.getUsuario());
-				return updtAcesso;
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "Site nao encontrado");
-				return updtAcesso;
-			}
+						}//se nao for o que eu to procurando, ver a prox linha
+						arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+						s = br.readLine();
+						updtAcesso.setExiste("N");
+					}
+					arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
+					s = br.readLine();
+					//site.setExiste("N");
+				}
 
-	
-	  		//gravar updt no txt
+			}
+			return arqFlag;
+
+	  		//gravar updt no tx
 	  
 	
 	  

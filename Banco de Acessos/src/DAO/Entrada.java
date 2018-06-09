@@ -17,13 +17,14 @@ public class Entrada {
 	String arquivo;
 	String country;
 
-	public void escolheArquivo() {
+	public String escolheArquivo() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.setDialogTitle("Escolha o arquivo:");
 		int ret = chooser.showOpenDialog(null);
 		if (ret == JFileChooser.APPROVE_OPTION)
 			arquivo = chooser.getSelectedFile().getAbsolutePath();
+		return arquivo;
 	}
 	
 	public String escolherSite() {

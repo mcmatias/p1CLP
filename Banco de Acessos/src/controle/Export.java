@@ -22,7 +22,7 @@ public class Export {
 	Entrada input = new Entrada();
 	
 	// pego com o usuario o arq que gostaria de ler
-	input.escolheArquivo();
+	String arquivo = input.escolheArquivo();
 	Acao acao = new Acao();
 	
 	InputStream is = new FileInputStream(input.getArquivo());
@@ -48,12 +48,12 @@ public class Export {
 			String impirmirUsuario = novoAcesso.getUsuario().toString();
 			String imprimirSenha = novoAcesso.getSenha().toString();
 			
-			String impressao = "Nome: " + imprimirNome + System.lineSeparator() + "URL: " + imprimirUrl + 
-					System.lineSeparator() + "Usuario: " +impirmirUsuario + System.lineSeparator() 
-					+ "Senha: " + imprimirSenha + System.lineSeparator() + "**************************";
+			String impressao = System.lineSeparator() + "nome: " + imprimirNome + System.lineSeparator() + "url: " + imprimirUrl + 
+					System.lineSeparator() + "usuario: " +impirmirUsuario + System.lineSeparator() 
+					+ "senha: " + imprimirSenha + System.lineSeparator() + "**************************" + System.lineSeparator();
 			
 			Gravartxt saida = new Gravartxt();
-			saida.escreve(impressao);
+			saida.escreve(impressao, arquivo);
 			
 			
 			JOptionPane.showMessageDialog(null, impressao);
@@ -67,43 +67,60 @@ public class Export {
 	else if (acaoRealizar.equals("Deletar")){
 		// pego c o usuario o acesso que gostaria de visualizar
 		String siteEscolhido = input.escolherSite();
-		acesso = input.pedeAcesso(br, siteEscolhido);
+		//acesso = input.pedeAcesso(br, siteEscolhido);
 		
-		
+		/*
 		if (acesso.getExiste().equals("N")) {
 			JOptionPane.showMessageDialog(null, "Site nao encontrado");
 		}
-		BeanAcesso delAcesso = acao.deletar(siteEscolhido);
-		String imprimirNome = acesso.getNome().toString();
-		String imprimirUrl = acesso.getUrl().toString();
-		String impirmirUsuario = acesso.getUsuario().toString();
-		String imprimirSenha = acesso.getSenha().toString();
+		*/
 		
-		String impressao = "Nome: " + imprimirNome + System.lineSeparator() + "URL: " + imprimirUrl + 
+		String[] imp = acao.deletar(br, siteEscolhido);
+		if (imp[1].equals("Tem")){
+			String impressao = imp[0];
+			Gravartxt saida = new Gravartxt();
+			saida.escreveDelete(impressao, arquivo);
+			
+			JOptionPane.showMessageDialog(null, "Site Deletado");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Site Nao Encontrado");
+		}
+		
+		/*
+		String imprimirNome = delAcesso.getNome().toString();
+		String imprimirUrl = delAcesso.getUrl().toString();
+		String impirmirUsuario = delAcesso.getUsuario().toString();
+		String imprimirSenha = delAcesso.getSenha().toString();
+		
+		String impressao = System.lineSeparator() + "Nome: " + imprimirNome + System.lineSeparator() + "URL: " + imprimirUrl + 
 				System.lineSeparator() + "Usuario: " +impirmirUsuario + System.lineSeparator() 
 				+ "Senha: " + imprimirSenha + System.lineSeparator();
-		JOptionPane.showMessageDialog(null, "Site Deletado");
+				
+		*/
+
 	}
 	
 	else if (acaoRealizar.equals("Atualizar")){
 		// pego c o usuario o acesso que gostaria de visualizar
 		String siteEscolhido = input.escolherSite();
-		acesso = input.pedeAcesso(br, siteEscolhido);
+		//acesso = input.pedeAcesso(br, siteEscolhido);
 		
-		
-		if (acesso.getExiste().equals("N")) {
+		String[] imp = acao.update(siteEscolhido, br);
+		if (imp[1].equals("NTem")) {
 			JOptionPane.showMessageDialog(null, "Site nao encontrado");
 		}
-		BeanAcesso updtAcesso = acao.update(siteEscolhido, acesso);
-		String imprimirNome = updtAcesso.getNome().toString();
-		String imprimirUrl = updtAcesso.getUrl().toString();
-		String impirmirUsuario = updtAcesso.getUsuario().toString();
-		String imprimirSenha = updtAcesso.getSenha().toString();
 		
-		String impressao = "Nome: " + imprimirNome + System.lineSeparator() + "URL: " + imprimirUrl + 
-				System.lineSeparator() + "Usuario: " +impirmirUsuario + System.lineSeparator() 
-				+ "Senha: " + imprimirSenha + System.lineSeparator();
-		JOptionPane.showMessageDialog(null, impressao);
+		else {
+
+
+			String impressao = imp[0];
+			Gravartxt saida = new Gravartxt();
+			saida.escreveUpd(impressao, arquivo);
+			
+			JOptionPane.showMessageDialog(null, impressao);
+		}
+
 	}
 	
 	else if (acaoRealizar.equals("Consultar")){
@@ -115,15 +132,18 @@ public class Export {
 		if (acesso.getExiste().equals("N")) {
 			JOptionPane.showMessageDialog(null, "Site nao encontrado");
 		}
-		String imprimirNome = acesso.getNome().toString();
-		String imprimirUrl = acesso.getUrl().toString();
-		String impirmirUsuario = acesso.getUsuario().toString();
-		String imprimirSenha = acesso.getSenha().toString();
-		
-		String impressao = "Nome: " + imprimirNome + System.lineSeparator() + "URL: " + imprimirUrl + 
-				System.lineSeparator() + "Usuario: " +impirmirUsuario + System.lineSeparator() 
-				+ "Senha: " + imprimirSenha + System.lineSeparator();
-		JOptionPane.showMessageDialog(null, impressao);
+		else {
+			String imprimirNome = acesso.getNome().toString();
+			String imprimirUrl = acesso.getUrl().toString();
+			String impirmirUsuario = acesso.getUsuario().toString();
+			String imprimirSenha = acesso.getSenha().toString();
+			
+			String impressao = "nome: " + imprimirNome + System.lineSeparator() + "url: " + imprimirUrl + 
+					System.lineSeparator() + "usuario: " +impirmirUsuario + System.lineSeparator() 
+					+ "senha: " + imprimirSenha + System.lineSeparator();
+			JOptionPane.showMessageDialog(null, impressao);
+		}
+
 	}
 	
 	else {
