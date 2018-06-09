@@ -50,7 +50,7 @@ public class Entrada {
 			} else {
 				String[] retornoSplit = s.split(":");
 				if (retornoSplit[0].equals("nome")) {
-					if (siteEscolhido.equals(retornoSplit[1])) {
+					if ((siteEscolhido.trim()).equals(retornoSplit[1].trim())) {
 						site.setExiste("S");
 						site.setNome(retornoSplit[1]);
 						s = br.readLine();
@@ -75,9 +75,10 @@ public class Entrada {
 						return site;
 					}//se nao for o que eu to procurando, ver a prox linha
 					s = br.readLine();
+					site.setExiste("N");
 				}
 				s = br.readLine();
-				site.setExiste("N");
+				//site.setExiste("N");
 			}
 
 		}
