@@ -88,7 +88,7 @@ public class Acao {
 	  
 }
 	  
-	  public BeanAcesso update(String siteEscolhido) {
+	  public BeanAcesso update(String siteEscolhido, BeanAcesso acesso) {
 		  
 	  		BeanAcesso updtAcesso = new BeanAcesso();
 	  		
@@ -103,27 +103,38 @@ public class Acao {
 				String perguntaupdtURL = "Qual a nova URL?"; 
 				String updtUrlSite = JOptionPane.showInputDialog(perguntaupdtURL);
 				updtAcesso.setUrl(updtUrlSite);
+				updtAcesso.setUsuario(acesso.getUsuario());
+				updtAcesso.setSenha(acesso.getSenha());
+				return updtAcesso;
+				
 			}
 			
-			if (updtSite.equals("Usuario")) {
+			else if (updtSite.equals("Usuario")) {
 				String perguntaupdtUser = "Qual o novo usuario?"; 
 				String updtUserSite = JOptionPane.showInputDialog(perguntaupdtUser);
-				updtAcesso.setNome(updtUserSite);
+				updtAcesso.setUsuario(updtUserSite);
+				updtAcesso.setUrl(acesso.getUrl());
+				updtAcesso.setSenha(acesso.getSenha());
+				return updtAcesso;
 			}
 
-			if (updtSite.equals("Senha")) {
+			else if (updtSite.equals("Senha")) {
 				String perguntaupdtSenha = "Qual a nova senha?"; 
 				String updtSenhaSite = JOptionPane.showInputDialog(perguntaupdtSenha);
 				updtAcesso.setSenha(updtSenhaSite);
+				updtAcesso.setUrl(acesso.getUrl());
+				updtAcesso.setUsuario(acesso.getUsuario());
+				return updtAcesso;
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Site nao encontrado");
+				return updtAcesso;
 			}
 
 	
 	  		//gravar updt no txt
 	  
-	return updtAcesso;
+	
 	  
 }
 			

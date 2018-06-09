@@ -8,10 +8,10 @@ import java.io.InputStreamReader;
 
 import javax.swing.JOptionPane;
 
-import controle.GerarTabela;
+import controle.Gravartxt;
 import DAO.Acao;
 import DAO.Entrada;
-import modelo.BeanCountry;
+
 
 public class Export {
 	
@@ -50,7 +50,12 @@ public class Export {
 			
 			String impressao = "Nome: " + imprimirNome + System.lineSeparator() + "URL: " + imprimirUrl + 
 					System.lineSeparator() + "Usuario: " +impirmirUsuario + System.lineSeparator() 
-					+ "Senha: " + imprimirSenha + System.lineSeparator();
+					+ "Senha: " + imprimirSenha + System.lineSeparator() + "**************************";
+			
+			Gravartxt saida = new Gravartxt();
+			saida.escreve(impressao);
+			
+			
 			JOptionPane.showMessageDialog(null, impressao);
 		}
 		else{
@@ -89,7 +94,7 @@ public class Export {
 		if (acesso.getExiste().equals("N")) {
 			JOptionPane.showMessageDialog(null, "Site nao encontrado");
 		}
-		BeanAcesso updtAcesso = acao.update(siteEscolhido);
+		BeanAcesso updtAcesso = acao.update(siteEscolhido, acesso);
 		String imprimirNome = updtAcesso.getNome().toString();
 		String imprimirUrl = updtAcesso.getUrl().toString();
 		String impirmirUsuario = updtAcesso.getUsuario().toString();

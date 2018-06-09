@@ -11,8 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import controle.BeanAcesso;
-import modelo.BeanCountry;
-import modelo.BeanCountry;
+
 
 public class Entrada {
 	String arquivo;
