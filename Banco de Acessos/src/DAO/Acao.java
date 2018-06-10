@@ -10,41 +10,13 @@ import controle.BeanAcesso;
 public class Acao {
 	
 	  public String qualAcao(){
-			String pergunta = "Qual acao deseja realizar:";   
+			String pergunta = "Qual acao deseja realizar (Inserir, Atualizar, Deletar, Consultar):";   
 			String acao = JOptionPane.showInputDialog(pergunta);
 			
 		return acao;	
 	  }
 	  
-	  /*
-	  public BeanAcesso realizarAcao(String acaoRealizar) {
-		  if (acaoRealizar.equals("Consulta")){
-			  // so chamar o bean que ja ta populado 
-		  }
-		  if (acaoRealizar.equals("Inserir")){
-			  // seto novos campos no Bean
-			  BeanAcesso novoAcesso = new BeanAcesso();
-				String perguntaNome = "Inserir nome do novo Site:";   
-				String nomeNovoSite = JOptionPane.showInputDialog(perguntaNome);
-				novoAcesso.setNome(nomeNovoSite);
-				
-				String perguntaUrl = "Inserir url do novo Site:";   
-				String novoUrlSite = JOptionPane.showInputDialog(perguntaUrl);
-				novoAcesso.setUrl(novoUrlSite);
-				
-				String perguntaUsuario = "Inserir usuario do novo Site:";   
-				String novoUsuarioSite = JOptionPane.showInputDialog(perguntaUsuario);
-				novoAcesso.setUsuario(novoUsuarioSite);
-				
-				String perguntaSenha = "Inserir url do novo Site:";   
-				String novoSenhaSite = JOptionPane.showInputDialog(perguntaSenha);
-				novoAcesso.setSenha(novoSenhaSite);
-				
-		  }
-		return null;
-		  
-	  }
-	  */
+
 	  
 	  public BeanAcesso inserir(String siteEscolhido) {
 		  
@@ -56,16 +28,52 @@ public class Acao {
 		  
 				String perguntaUrl = "Inserir url do novo Site:";   
 				String novoUrlSite = JOptionPane.showInputDialog(perguntaUrl);
-				novoAcesso.setUrl(novoUrlSite);
+				if (novoUrlSite == null){
+					//JOptionPane.showMessageDialog(null, "Operação Cancelada");
+					//novoAcesso = null;
+					novoAcesso.setExiste("Cancelado");
+					novoAcesso.setSenha("Cancelado");
+					novoAcesso.setUrl("Cancelado");
+					novoAcesso.setUsuario("Cancelado");
+					JOptionPane.showMessageDialog(null, "Operação Cancelada");
+					return novoAcesso;
+					
+				} else {
+					novoAcesso.setUrl(novoUrlSite);
+				}
+				
 				
 				String perguntaUsuario = "Inserir usuario do novo Site:";   
 				String novoUsuarioSite = JOptionPane.showInputDialog(perguntaUsuario);
-				novoAcesso.setUsuario(novoUsuarioSite);
+				if (novoUsuarioSite == null){
+					novoAcesso.setExiste("Cancelado");
+					novoAcesso.setSenha("Cancelado");
+					novoAcesso.setUrl("Cancelado");
+					novoAcesso.setUsuario("Cancelado");
+					JOptionPane.showMessageDialog(null, "Operação Cancelada");
+					return novoAcesso;
+					
+				} else {
+					novoAcesso.setUsuario(novoUsuarioSite);
+				}
+												
 				
 				String perguntaSenha = "Inserir senha do novo Site:";   
 				String novoSenhaSite = JOptionPane.showInputDialog(perguntaSenha);
-				String senhaCrip = (senhaCriptografada.criptografar(novoSenhaSite)).toString();
-				novoAcesso.setSenha(senhaCrip);
+				if (novoSenhaSite == null){
+					novoAcesso.setExiste("Cancelado");
+					novoAcesso.setSenha("Cancelado");
+					novoAcesso.setUrl("Cancelado");
+					novoAcesso.setUsuario("Cancelado");
+					JOptionPane.showMessageDialog(null, "Operação Cancelada");
+					return novoAcesso;
+					
+				} else {
+					String senhaCrip = (senhaCriptografada.criptografar(novoSenhaSite)).toString();
+					novoAcesso.setSenha(senhaCrip);
+				}
+
+				
 				
 				//inserir no txt
 		  
@@ -145,10 +153,16 @@ public class Acao {
 						
 							String perguntaupdt = "Qual dado deseja fazer o update(URL, Usuario ou Senha)?";   
 							String updtSite = JOptionPane.showInputDialog(perguntaupdt);
+							if (updtSite == null){
+								JOptionPane.showMessageDialog(null, "Operação Cancelada");
+							} else {
 						//if (retornoSplit[0].equals("url")) {
 							 if (updtSite.equals("URL")) {
 								String perguntaupdtURL = "Qual a nova URL?"; 
 								String updtUrlSite = JOptionPane.showInputDialog(perguntaupdtURL);
+								if (updtUrlSite == null){
+									JOptionPane.showMessageDialog(null, "Operação Cancelada");
+								} else{
 								updtAcesso.setUrl(updtUrlSite);
 								String ss = "url: " + (updtAcesso.getUrl()).toString();
 								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
@@ -164,7 +178,7 @@ public class Acao {
 								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
 								s = br.readLine();
 								retornoSplit = s.split(":");
-								
+								}
 							}
 							
 						
@@ -172,6 +186,9 @@ public class Acao {
 							else if (updtSite.equals("Usuario")) {
 								String perguntaupdtUser = "Qual o novo usuario?"; 
 								String updtUserSite = JOptionPane.showInputDialog(perguntaupdtUser);
+								if (updtUserSite == null){
+									JOptionPane.showMessageDialog(null, "Operação Cancelada");
+								} else {
 								updtAcesso.setUrl(retornoSplit[1]);
 								String ss = "url: " + (updtAcesso.getUrl()).toString();
 								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
@@ -187,6 +204,7 @@ public class Acao {
 								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
 								s = br.readLine();
 								retornoSplit = s.split(":");
+								}
 							}
 		
 						
@@ -195,6 +213,9 @@ public class Acao {
 							else if (updtSite.equals("Senha")) {
 								String perguntaupdtSenha = "Qual a nova senha?"; 
 								String updtSenhaSite = JOptionPane.showInputDialog(perguntaupdtSenha);
+								if (updtSenhaSite == null){
+									JOptionPane.showMessageDialog(null, "Operação Cancelada");
+								} else {
 								String senhaCrip = (senhaCriptografada.criptografar(updtSenhaSite)).toString();
 								updtAcesso.setUrl(retornoSplit[1]);
 								String ss = "url: " + (updtAcesso.getUrl()).toString();
@@ -211,12 +232,13 @@ public class Acao {
 								arqFlag[0] = arqFlag[0] + ss + System.lineSeparator();
 								s = br.readLine();
 								retornoSplit = s.split(":");
+								}
 							}
 							else{
 								JOptionPane.showMessageDialog(null, "Site nao encontrado");
 				
 							}
-
+							}
 						}//se nao for o que eu to procurando, ver a prox linha
 						arqFlag[0] = arqFlag[0] + s + System.lineSeparator();
 						s = br.readLine();

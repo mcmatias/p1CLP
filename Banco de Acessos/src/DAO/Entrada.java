@@ -30,8 +30,16 @@ public class Entrada {
 	public String escolherSite() {
 		String pergunta = "Escolha um site:";
 		String siteEscolhido = JOptionPane.showInputDialog(pergunta);
+		if (siteEscolhido == null){
+			
+			JOptionPane.showMessageDialog(null, "Operação Cancelada");
+			String msg = "Erro";
+			return msg;
+		} else {
+			return siteEscolhido;
+		}
 		
-		return siteEscolhido;
+		
 	}
 
 	public BeanAcesso pedeAcesso(BufferedReader br, String siteEscolhido) throws IOException {

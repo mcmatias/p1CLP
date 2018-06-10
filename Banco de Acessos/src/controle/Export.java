@@ -23,6 +23,9 @@ public class Export {
 	
 	// pego com o usuario o arq que gostaria de ler
 	String arquivo = input.escolheArquivo();
+	if (arquivo == null) {
+		JOptionPane.showMessageDialog(null, "Operação Cancelada");
+	} else {
 	Acao acao = new Acao();
 	
 	InputStream is = new FileInputStream(input.getArquivo());
@@ -31,17 +34,26 @@ public class Export {
 	BeanAcesso acesso = new BeanAcesso();
 	
 	// pego do usuario a acao a ser realizada
-	String acaoRealizar = acao.qualAcao(); 
+	String acaoRealizar = acao.qualAcao();
+	if (acaoRealizar == null) {
+		JOptionPane.showMessageDialog(null, "Operação Cancelada");
+	} else {
 	if (acaoRealizar.equals("Inserir")) {
 		
 		// testo se esse site ja existe no documento
 		String siteEscolhido = input.escolherSite();
+
+		
+		
 		
 		acesso = input.pedeAcesso(br, siteEscolhido);
 		
 		//se nao existir
 		if (acesso.getExiste().equals("N")){
 			BeanAcesso novoAcesso = acao.inserir(siteEscolhido);
+			if (novoAcesso == null){
+				JOptionPane.showMessageDialog(null, "Operação Cancelada");
+			} else {
 			//chamar a funcao de gravar no txt passando novoAcesso como parametro
 			String imprimirNome = novoAcesso.getNome().toString();
 			String imprimirUrl = novoAcesso.getUrl().toString();
@@ -57,8 +69,8 @@ public class Export {
 			
 			
 			JOptionPane.showMessageDialog(null, impressao);
-		}
-		else{
+		} 
+		}else {
 			JOptionPane.showMessageDialog(null, "Site já existente");
 		}
 		
@@ -105,21 +117,26 @@ public class Export {
 		// pego c o usuario o acesso que gostaria de visualizar
 		String siteEscolhido = input.escolherSite();
 		//acesso = input.pedeAcesso(br, siteEscolhido);
-		
-		String[] imp = acao.update(siteEscolhido, br);
-		if (imp[1].equals("NTem")) {
-			JOptionPane.showMessageDialog(null, "Site nao encontrado");
-		}
-		
-		else {
-
-
-			String impressao = imp[0];
-			Gravartxt saida = new Gravartxt();
-			saida.escreveUpd(impressao, arquivo);
+		if (siteEscolhido.equals("Erro")){
+			//JOptionPane.showMessageDialog(null, "Operação Cancelada");
+		} else {
 			
-			JOptionPane.showMessageDialog(null, impressao);
+			String[] imp = acao.update(siteEscolhido, br);
+			if (imp[1].equals("NTem")) {
+				JOptionPane.showMessageDialog(null, "Site nao encontrado");
+			}
+			
+			else {
+
+
+				String impressao = imp[0];
+				Gravartxt saida = new Gravartxt();
+				saida.escreveUpd(impressao, arquivo);
+				
+				JOptionPane.showMessageDialog(null, impressao);
+			}
 		}
+		
 
 	}
 	
@@ -153,8 +170,9 @@ public class Export {
 	
 
 	
-	
+	}
 	
 	}
 	
+	} 
 }
